@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cómo construimos la web de la AFA – Tutorial</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #f5f8f5;
+      color: #1a2a1a;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    /* ── Cabecera ── */
+    header {
+      background: #0f5f3a;
+      color: white;
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      font-family: Arial, sans-serif;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+    }
+    .badge {
+      display: inline-block;
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 99px;
+      padding: 0.3rem 1rem;
+      font-size: 0.85rem;
+      font-family: Arial, sans-serif;
+    }
+
+    /* ── Contenido ── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Índice ── */
+    .toc {
+      background: white;
+      border: 1px solid #c8e6c9;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+    .toc h2 {
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #0f5f3a;
+      margin-bottom: 1rem;
+    }
+    .toc ol { padding-left: 1.4rem; }
+    .toc li { margin-bottom: 0.4rem; }
+    .toc a { color: #198754; text-decoration: none; font-family: Arial, sans-serif; font-size: 0.95rem; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── Secciones ── */
+    section { margin-bottom: 3.5rem; }
+    section h2 {
+      font-family: Arial, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #0f5f3a;
+      border-left: 5px solid #198754;
+      padding-left: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+    section h3 {
+      font-family: Arial, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a2a1a;
+      margin: 1.5rem 0 0.5rem;
+    }
+    section p { margin-bottom: 1rem; }
+    section ul, section ol {
+      padding-left: 1.6rem;
+      margin-bottom: 1rem;
+    }
+    section li { margin-bottom: 0.4rem; }
+
+    /* ── Cajas de concepto ── */
+    .concept {
+      background: #e8f5e9;
+      border-left: 4px solid #198754;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+      font-family: Arial, sans-serif;
+      font-size: 0.95rem;
+    }
+    .concept strong { color: #0f5f3a; }
+
+    /* ── Cajas de código (solo texto, sin ejecución) ── */
+    .code-block {
+      background: #1e2d1e;
+      color: #a8e6a8;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.6;
+    }
+    .code-block .comment { color: #6a9a6a; }
+    .code-block .keyword { color: #79c0ff; }
+    .code-block .string { color: #f0a070; }
+
+    /* ── Tarjetas de herramienta ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .tool-card {
+      background: white;
+      border: 1px solid #c8e6c9;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+    .tool-card .tool-name {
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0f5f3a;
+      margin-bottom: 0.3rem;
+    }
+    .tool-card p {
+      font-size: 0.88rem;
+      color: #444;
+      margin: 0;
+    }
+
+    /* ── Pasos numerados ── */
+    .steps { counter-reset: step; list-style: none; padding: 0; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+    }
+    .steps li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 2.2rem;
+      height: 2.2rem;
+      background: #198754;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+    .steps li > div { flex: 1; }
+    .steps li strong {
+      display: block;
+      font-family: Arial, sans-serif;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ── Diagrama de árbol de archivos ── */
+    .tree {
+      background: white;
+      border: 1px solid #c8e6c9;
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 2;
+      margin: 1rem 0;
+    }
+    .tree .folder { color: #0f5f3a; font-weight: bold; }
+    .tree .file { color: #444; }
+    .tree .comment-inline { color: #888; font-style: italic; font-family: Georgia, serif; font-size: 0.82rem; }
+
+    /* ── Separador de sección ── */
+    .divider {
+      border: none;
+      border-top: 2px dashed #c8e6c9;
+      margin: 3rem 0;
+    }
+
+    /* ── Nota final ── */
+    .final-note {
+      background: #0f5f3a;
+      color: white;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+    }
+    .final-note h2 { font-family: Arial, sans-serif; margin-bottom: 0.8rem; border: none; padding: 0; color: white; }
+    .final-note p { opacity: 0.9; font-size: 0.95rem; }
+    .final-note a { color: #a8e6a8; }
+
+    /* ── Pie ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Cómo construimos la web de la AFA</h1>
+  <p>De cero a una web publicada en internet, paso a paso</p>
+  <span class="badge">Tutorial para personas sin conocimientos de programación</span>
+</header>
+
+<main>
+
+  <!-- ÍNDICE -->
+  <nav class="toc">
+    <h2>Índice</h2>
+    <ol>
+      <li><a href="#que-construimos">¿Qué hemos construido?</a></li>
+      <li><a href="#herramientas">Las herramientas que usamos</a></li>
+      <li><a href="#estructura">Cómo se organiza el proyecto</a></li>
+      <li><a href="#paginas">Las páginas de la web</a></li>
+      <li><a href="#idiomas">Dos idiomas: castellano y euskera</a></li>
+      <li><a href="#base-datos">La base de datos (Supabase)</a></li>
+      <li><a href="#login">El acceso privado para socios</a></li>
+      <li><a href="#publicacion">Cómo se publica en internet automáticamente</a></li>
+      <li><a href="#flujo">El flujo completo de trabajo</a></li>
+      <li><a href="#siguientes-pasos">Siguientes pasos</a></li>
+    </ol>
+  </nav>
+
+
+  <!-- 1 -->
+  <section id="que-construimos">
+    <h2>1. ¿Qué hemos construido?</h2>
+    <p>
+      Hemos creado la web oficial de la <strong>AFA Remontival</strong>, la asociación de familias de alumnos del colegio Remontival de Pamplona. La web tiene dos partes:
+    </p>
+    <ul>
+      <li><strong>Parte pública</strong> – visible para cualquier persona que entre. Muestra noticias, actividades, consejos para familias, menús del comedor y cómo contactar.</li>
+      <li><strong>Parte privada</strong> – solo para socios. Permite identificarse con email y contraseña para acceder a contenido o funciones exclusivas.</li>
+    </ul>
+    <p>
+      La web está disponible en dos idiomas: <strong>castellano</strong> y <strong>euskera</strong>, y se puede visitar en:
+      <br /><a href="https://robeche.github.io/afa/" target="_blank">https://robeche.github.io/afa/</a>
+    </p>
+
+    <div class="concept">
+      <strong>Concepto clave: web estática vs. dinámica.</strong><br />
+      Una web <em>dinámica</em> genera cada página en tiempo real cuando alguien la visita (como lo hacía la web anterior en Django/Python). Una web <em>estática</em> genera todos los archivos HTML de antemano y los sirve tal cual, como si fueran documentos. Esto la hace muy rápida y barata de hospedar. La nueva web de la AFA es estática, aunque se conecta a una base de datos para mostrar datos actualizados.
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 2 -->
+  <section id="herramientas">
+    <h2>2. Las herramientas que usamos</h2>
+    <p>Para construir la web hemos utilizado varias herramientas, cada una con un propósito concreto:</p>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-name">Next.js</div>
+        <p>El marco principal que estructura toda la web. Es como el "esqueleto" sobre el que construimos todo.</p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">TypeScript</div>
+        <p>El lenguaje de programación que usamos. Es una versión mejorada de JavaScript que ayuda a detectar errores antes de que ocurran.</p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Tailwind CSS</div>
+        <p>Sistema de estilos visuales. Define colores, tamaños y disposición de los elementos en pantalla.</p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Supabase</div>
+        <p>La base de datos y el sistema de login en la nube. Guarda noticias, actividades, socios, etc.</p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">GitHub</div>
+        <p>Almacén del código fuente. Guarda todos los archivos del proyecto con historial de cambios.</p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">GitHub Pages</div>
+        <p>El servidor gratuito donde está publicada la web. Cada vez que se sube código nuevo, la web se actualiza sola.</p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Bootstrap Icons</div>
+        <p>Colección de iconos listos para usar (casitas, sobres, calendarios…) que hacen la web más visual.</p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">VS Code</div>
+        <p>El editor de texto especializado donde se escribe el código, con ayuda inteligente de GitHub Copilot.</p>
+      </div>
+    </div>
+
+    <div class="concept">
+      <strong>¿Por qué Next.js y no WordPress?</strong><br />
+      WordPress es muy popular pero necesita un servidor que esté ejecutándose constantemente. Next.js puede generar una web estática que funciona en servidores gratuitos como GitHub Pages, sin coste mensual de hosting. Además es mucho más rápida y segura.
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 3 -->
+  <section id="estructura">
+    <h2>3. Cómo se organiza el proyecto</h2>
+    <p>
+      Un proyecto web moderno no es un solo archivo, sino una carpeta con cientos de archivos organizados. Aquí está la estructura principal:
+    </p>
+
+    <div class="tree">
+      <span class="folder">📁 WebAFA/</span><br />
+      &nbsp;&nbsp;<span class="folder">📁 src/</span> &nbsp;<span class="comment-inline">← todo el código fuente está aquí</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 app/</span> &nbsp;<span class="comment-inline">← cada carpeta = una URL de la web</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 (public)/[lang]/</span> &nbsp;<span class="comment-inline">← páginas públicas en /es o /eu</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 page.tsx</span> &nbsp;<span class="comment-inline">← portada</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 noticias/</span> &nbsp;<span class="comment-inline">← lista de noticias y detalle</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 actividades/</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 consejos/</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 comedor/</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 contacto/</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 (private)/socios/</span> &nbsp;<span class="comment-inline">← área privada de socios</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 components/</span> &nbsp;<span class="comment-inline">← piezas reutilizables de la interfaz</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 layout/</span> &nbsp;<span class="comment-inline">← cabecera, pie, envoltorio general</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 ui/</span> &nbsp;<span class="comment-inline">← tarjetas, carrusel, selector de idioma</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 lib/</span> &nbsp;<span class="comment-inline">← lógica y utilidades</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 i18n/</span> &nbsp;<span class="comment-inline">← textos en castellano y euskera</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 supabase/</span> &nbsp;<span class="comment-inline">← conexión a la base de datos</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 types/</span> &nbsp;<span class="comment-inline">← definición de qué datos tiene cada cosa</span><br />
+      &nbsp;&nbsp;<span class="folder">📁 public/</span> &nbsp;<span class="comment-inline">← imágenes, logos y archivos estáticos</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 assets/logos/</span> &nbsp;<span class="comment-inline">← LogoHorizontal.png</span><br />
+      &nbsp;&nbsp;<span class="folder">📁 supabase/migrations/</span> &nbsp;<span class="comment-inline">← instrucciones SQL para crear la base de datos</span><br />
+      &nbsp;&nbsp;<span class="folder">📁 .github/workflows/</span> &nbsp;<span class="comment-inline">← automatización del deploy</span><br />
+      &nbsp;&nbsp;<span class="file">📄 next.config.ts</span> &nbsp;<span class="comment-inline">← configuración principal de Next.js</span><br />
+      &nbsp;&nbsp;<span class="file">📄 .env.local</span> &nbsp;<span class="comment-inline">← contraseñas y claves secretas (no en GitHub)</span><br />
+    </div>
+
+    <div class="concept">
+      <strong>¿Qué es un componente?</strong><br />
+      Un componente es una pieza de interfaz reutilizable. Por ejemplo, la tarjeta de noticia (imagen + título + fecha + resumen) es un componente. Se define una sola vez y se usa en todas las páginas que lo necesitan. Si cambias el diseño de la tarjeta, el cambio se aplica en todos los sitios automáticamente.
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 4 -->
+  <section id="paginas">
+    <h2>4. Las páginas de la web</h2>
+    <p>
+      En Next.js, <strong>cada carpeta dentro de <code>app/</code> es una página</strong>. La URL que ve el usuario en el navegador corresponde directamente a la estructura de carpetas.
+    </p>
+
+    <table style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 0.9rem; margin: 1rem 0;">
+      <thead>
+        <tr style="background: #198754; color: white;">
+          <th style="padding: 0.6rem 1rem; text-align: left;">URL en el navegador</th>
+          <th style="padding: 0.6rem 1rem; text-align: left;">Qué muestra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: white;">
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;"><code>/es</code> o <code>/eu</code></td>
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;">Portada principal con noticias y llamadas a acción</td>
+        </tr>
+        <tr style="background: #f9fdf9;">
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;"><code>/es/noticias</code></td>
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;">Lista de todas las noticias</td>
+        </tr>
+        <tr style="background: white;">
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;"><code>/es/noticias/fiesta-fin-curso</code></td>
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;">Noticia concreta (el texto después de <em>noticias/</em> es el "slug")</td>
+        </tr>
+        <tr style="background: #f9fdf9;">
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;"><code>/es/actividades</code></td>
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;">Próximas actividades de la AFA</td>
+        </tr>
+        <tr style="background: white;">
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;"><code>/es/comedor</code></td>
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;">PDFs del menú del comedor escolar</td>
+        </tr>
+        <tr style="background: #f9fdf9;">
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;"><code>/es/consejos</code></td>
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;">Consejos y orientación para familias</td>
+        </tr>
+        <tr style="background: white;">
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;"><code>/es/contacto</code></td>
+          <td style="padding: 0.5rem 1rem; border-bottom: 1px solid #e0e0e0;">Dirección y datos de contacto</td>
+        </tr>
+        <tr style="background: #f9fdf9;">
+          <td style="padding: 0.5rem 1rem;"><code>/socios</code></td>
+          <td style="padding: 0.5rem 1rem;">Área privada: formulario de login</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="concept">
+      <strong>¿Qué es un "slug"?</strong><br />
+      Un slug es el identificador único de un contenido en la URL. Por ejemplo, la noticia sobre la fiesta de fin de curso tiene el slug <code>fiesta-fin-curso</code>. Así la URL es legible y descriptiva en lugar de mostrar números crípticos como <code>/noticia?id=47</code>.
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 5 -->
+  <section id="idiomas">
+    <h2>5. Dos idiomas: castellano y euskera</h2>
+    <p>
+      Toda la web está disponible en los dos idiomas. Esto se llama <strong>internacionalización</strong> (abreviado <em>i18n</em>). Así es como funciona:
+    </p>
+
+    <h3>El idioma en la URL</h3>
+    <p>
+      El segmento <code>[lang]</code> en la URL es dinámico: puede ser <code>es</code> o <code>eu</code>. Next.js genera páginas distintas para cada idioma cuando construye el proyecto.
+    </p>
+
+    <h3>Los textos en archivos JSON</h3>
+    <p>
+      En lugar de escribir los textos directamente en el código, los guardamos en archivos de traducción:
+    </p>
+    <div class="code-block">
+<span class="comment">// src/lib/i18n/es.json (castellano)</span>
+{
+  <span class="string">"siteName"</span>: <span class="string">"AFA Remontival"</span>,
+  <span class="string">"menu"</span>: {
+    <span class="string">"noticias"</span>: <span class="string">"Noticias"</span>,
+    <span class="string">"comedor"</span>: <span class="string">"Comedor"</span>
+  }
+}
+
+<span class="comment">// src/lib/i18n/eu.json (euskera)</span>
+{
+  <span class="string">"siteName"</span>: <span class="string">"AFA Remontival"</span>,
+  <span class="string">"menu"</span>: {
+    <span class="string">"noticias"</span>: <span class="string">"Berriak"</span>,
+    <span class="string">"comedor"</span>: <span class="string">"Jantokia"</span>
+  }
+}
+    </div>
+    <p>
+      El código pregunta: "¿en qué idioma estamos?" y carga el archivo correspondiente. El contenido de las noticias también se guarda en dos versiones (<code>titulo_es</code> / <code>titulo_eu</code>) en la base de datos.
+    </p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 6 -->
+  <section id="base-datos">
+    <h2>6. La base de datos (Supabase)</h2>
+    <p>
+      Una base de datos es como una hoja de cálculo en la nube, pero mucho más potente y segura. Usamos <strong>Supabase</strong>, un servicio gratuito basado en PostgreSQL.
+    </p>
+
+    <h3>Las tablas que hemos creado</h3>
+    <p>Cada tabla guarda un tipo de información diferente:</p>
+    <ul>
+      <li><strong>noticias</strong> – título, resumen, contenido, fecha, imagen, publicada (sí/no)</li>
+      <li><strong>actividades</strong> – título, descripción, fecha inicio, fecha fin, ubicación</li>
+      <li><strong>consejos</strong> – título, contenido, imagen, orden de aparición</li>
+      <li><strong>documentos_comedor</strong> – mes, año, enlace al PDF en castellano, enlace en euskera</li>
+      <li><strong>socios_perfiles</strong> – nombre, apellidos, rol (admin / editor / socio)</li>
+      <li><strong>contacto_mensajes</strong> – mensajes enviados desde el formulario de contacto</li>
+    </ul>
+
+    <h3>La seguridad: Row Level Security (RLS)</h3>
+    <p>
+      RLS es un sistema de permisos que actúa directamente en la base de datos. Define quién puede ver o modificar cada fila de cada tabla. Hemos configurado estas reglas:
+    </p>
+    <ul>
+      <li>Cualquier visitante puede <strong>leer</strong> noticias, actividades y consejos marcados como publicados.</li>
+      <li>Solo <strong>admin</strong> y <strong>editor</strong> pueden crear, editar o borrar contenido.</li>
+      <li>Cada socio puede ver <strong>solo su propio perfil</strong>.</li>
+      <li>El formulario de contacto puede enviar mensajes sin login, pero solo admin/editor puede leerlos.</li>
+    </ul>
+
+    <div class="concept">
+      <strong>¿Por qué es importante RLS?</strong><br />
+      En muchas webs, la seguridad se programa solo en el servidor web. Si alguien encuentra un fallo, puede acceder a todos los datos. Con RLS, aunque alguien saltara el servidor, la propia base de datos rechazaría las peticiones no autorizadas. Es una capa extra de protección.
+    </div>
+
+    <h3>El archivo de migración SQL</h3>
+    <p>
+      Toda la estructura de la base de datos está escrita en un archivo llamado <code>0001_init.sql</code>. Ejecutarlo en Supabase crea todas las tablas, permisos y funciones de una sola vez. Esto significa que cualquier persona con acceso al proyecto puede reproducir exactamente la misma base de datos.
+    </p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 7 -->
+  <section id="login">
+    <h2>7. El acceso privado para socios</h2>
+    <p>
+      La página <code>/socios</code> tiene un formulario de email y contraseña. Supabase Auth se encarga de todo el proceso de autenticación de forma segura:
+    </p>
+
+    <ul class="steps">
+      <li>
+        <div>
+          <strong>El socio escribe su email y contraseña</strong>
+          El formulario envía los datos a Supabase Auth a través de internet cifrado (HTTPS).
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Supabase verifica las credenciales</strong>
+          Comprueba en su base de datos segura si el email y contraseña coinciden.
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Supabase devuelve un token de sesión</strong>
+          Un token es como un pase temporal que dice "este usuario ha iniciado sesión correctamente". Se guarda en el navegador.
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>La web muestra el área privada</strong>
+          Con el token activo, el usuario ve su nombre y el botón de "Cerrar sesión". El token caduca automáticamente.
+        </div>
+      </li>
+    </ul>
+
+    <p>
+      Las contraseñas <strong>nunca</strong> se guardan en texto plano; Supabase las almacena como un hash (una huella digital irreversible).
+    </p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 8 -->
+  <section id="publicacion">
+    <h2>8. Cómo se publica en internet automáticamente</h2>
+    <p>
+      Cada vez que se sube código nuevo a GitHub, un proceso automático construye y publica la web sin intervención manual. Esto se llama <strong>CI/CD</strong> (Integración y Despliegue Continuos).
+    </p>
+
+    <ul class="steps">
+      <li>
+        <div>
+          <strong>Se sube código a GitHub</strong>
+          El desarrollador ejecuta <code>git push</code> desde su ordenador. Los archivos llegan al repositorio en GitHub.
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>GitHub Actions detecta el cambio</strong>
+          Un archivo de configuración (<code>deploy-pages.yml</code>) le dice a GitHub qué hacer cuando llega código nuevo.
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Se construye la web en un servidor de GitHub</strong>
+          Next.js compila todo el código y genera archivos HTML, CSS y JS listos para servir. Este proceso dura unos 40 segundos.
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Los archivos se suben a GitHub Pages</strong>
+          GitHub Pages sirve esos archivos estáticos como una web pública. Es completamente gratuito.
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>La web está actualizada</strong>
+          En menos de 2 minutos desde el push, los visitantes ven la nueva versión.
+        </div>
+      </li>
+    </ul>
+
+    <div class="concept">
+      <strong>¿Qué son los "secrets" de GitHub?</strong><br />
+      Las claves privadas de Supabase (URLs y contraseñas) no pueden estar en el código porque GitHub es público. Se guardan como "secrets" en la configuración del repositorio de GitHub. El proceso de construcción las inyecta en el momento de compilar, sin que nadie pueda verlas.
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 9 -->
+  <section id="flujo">
+    <h2>9. El flujo completo de trabajo</h2>
+    <p>Este diagrama resume cómo encajan todas las piezas:</p>
+
+    <div style="background: white; border: 1px solid #c8e6c9; border-radius: 12px; padding: 1.5rem 2rem; font-family: Arial, sans-serif; font-size: 0.9rem; line-height: 2.2;">
+
+      <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+        <span style="background:#0f5f3a; color:white; border-radius:8px; padding:0.3rem 0.8rem; font-weight:bold;">Desarrollo</span>
+        <span>→ VS Code + GitHub Copilot → se escribe y prueba el código en local</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+        <span style="background:#198754; color:white; border-radius:8px; padding:0.3rem 0.8rem; font-weight:bold;">Control de versiones</span>
+        <span>→ git push → el código va a GitHub con historial completo</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+        <span style="background:#2e7d32; color:white; border-radius:8px; padding:0.3rem 0.8rem; font-weight:bold;">Automatización</span>
+        <span>→ GitHub Actions compila y despliega automáticamente en GitHub Pages</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+        <span style="background:#388e3c; color:white; border-radius:8px; padding:0.3rem 0.8rem; font-weight:bold;">Usuarios</span>
+        <span>→ visitan la web en su navegador → ven HTML estático muy rápido</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.8rem;">
+        <span style="background:#43a047; color:white; border-radius:8px; padding:0.3rem 0.8rem; font-weight:bold;">Datos en vivo</span>
+        <span>→ Supabase sirve noticias, hace el login y gestiona socios en tiempo real</span>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 10 -->
+  <section id="siguientes-pasos">
+    <h2>10. Siguientes pasos</h2>
+    <p>La base está completamente construida. Lo que queda por hacer es principalmente contenido y conexión con datos reales:</p>
+
+    <ul>
+      <li>✅ Estructura y rutas de la web</li>
+      <li>✅ Diseño visual con logo y menú</li>
+      <li>✅ Sistema de idiomas (castellano/euskera)</li>
+      <li>✅ Base de datos con tablas y seguridad RLS</li>
+      <li>✅ Login de socios funcionando</li>
+      <li>✅ Publicación automática en GitHub Pages</li>
+      <li>⬜ Conectar las páginas a los datos reales de Supabase (ahora usan datos de ejemplo)</li>
+      <li>⬜ Añadir contenido real: noticias, actividades, consejos, PDFs del comedor</li>
+      <li>⬜ Panel de administración para que admin/editor gestione el contenido</li>
+      <li>⬜ Formulario de contacto funcional que guarde mensajes en Supabase</li>
+      <li>⬜ Imágenes de portada y de noticias</li>
+    </ul>
+  </section>
+
+  <hr class="divider" />
+
+  <div class="final-note">
+    <h2>¿Cuánto ha costado esto?</h2>
+    <p>
+      El coste económico directo de este proyecto es <strong>cero euros</strong>.<br />
+      GitHub, GitHub Pages y Supabase (en su plan gratuito) cubren todo lo necesario para una asociación de este tamaño.<br /><br />
+      El código fuente está disponible en:<br />
+      <a href="https://github.com/robeche/afa" target="_blank">https://github.com/robeche/afa</a>
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  Construido con Next.js · Supabase · GitHub Pages &nbsp;|&nbsp; AFA Remontival 2026
+</footer>
+
+</body>
+</html>

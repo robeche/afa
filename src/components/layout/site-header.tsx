@@ -25,8 +25,8 @@ export function SiteHeader({ lang }: SiteHeaderProps) {
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <Link href={`/${lang}`} className="flex items-center">
             <Image
-              src="/assets/logos/LogoHorizontal.png"
-              alt="APYMA Remontival"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/assets/logos/LogoHorizontal.png`}
+              alt="AFA Remontival"
               width={340}
               height={90}
               priority
