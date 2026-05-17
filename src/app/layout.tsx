@@ -15,8 +15,8 @@ const sourceSans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  title: "APYMA Remontival",
-  description: "Web oficial APYMA Remontival con contenido bilingue y area de socios.",
+  title: "AFA Remontival",
+  description: "Web oficial AFA Remontival con contenido bilingue y area de socios.",
 };
 
 export default function RootLayout({
@@ -29,6 +29,14 @@ export default function RootLayout({
       lang="es"
       className={`${montserrat.variable} ${sourceSans.variable} h-full antialiased`}
     >
+      <head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://*.supabase.co; connect-src 'self' https://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self';"
+        />
+        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+        <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

@@ -20,7 +20,8 @@ export default function SociosPage() {
       password,
     });
 
-    setMessage(error ? error.message : "Sesion iniciada correctamente.");
+    // Mensaje generico para no revelar si el email existe o no (previene enumeracion de usuarios)
+    setMessage(error ? "Email o contrasena incorrectos. Por favor, intentalo de nuevo." : "Sesion iniciada correctamente.");
   };
 
   const handleLogout = async () => {
@@ -61,6 +62,7 @@ export default function SociosPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
+                autoComplete="email"
                 className="w-full rounded-md border border-emerald-200 px-3 py-2"
               />
             </div>
@@ -75,6 +77,7 @@ export default function SociosPage() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
+                autoComplete="current-password"
                 className="w-full rounded-md border border-emerald-200 px-3 py-2"
               />
             </div>
