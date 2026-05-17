@@ -52,6 +52,26 @@ El archivo supabase/migrations/0001_init.sql incluye:
 
 Puedes aplicarlo con Supabase CLI o pegandolo en el SQL Editor del proyecto.
 
+## Deploy en GitHub Pages
+
+Este repositorio ya incluye workflow de despliegue en [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml).
+
+Pasos en GitHub:
+
+1. Ir a Settings > Pages.
+2. En Build and deployment seleccionar Source: GitHub Actions.
+3. Ir a Settings > Secrets and variables > Actions y crear estos secretos de repositorio:
+	- NEXT_PUBLIC_SUPABASE_URL
+	- NEXT_PUBLIC_SUPABASE_ANON_KEY
+4. Hacer push a main para disparar el despliegue.
+
+URL esperada en este repo: https://robeche.github.io/afa/
+
+Notas:
+
+- La configuracion de [next.config.ts](next.config.ts) ajusta automaticamente basePath/assetPrefix en CI para GitHub Pages.
+- Si en el futuro usas dominio personalizado, se puede retirar ese prefijo de ruta.
+
 ## Estado de esta primera iteracion
 
 - Layout visual alineado con la web actual: cabecera, menu con iconos, carrusel y bloques en home
