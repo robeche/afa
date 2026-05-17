@@ -1,0 +1,22 @@
+{
+  "siteName": "APYMA Remontival",
+  "login": "Bazkideen sarbidea",
+  "home": {
+    "title": "Hezkuntza komunitatea eraikitzen",
+    "subtitle": "APYMAren informazioa, ikastetxeko berriak eta familientzako jarduerak.",
+    "latestNews": "Azken Berriak",
+    "nextActivities": "Hurrengo Jarduerak"
+  },
+  "menu": {
+    "inicio": "Hasiera",
+    "noticias": "Berriak",
+    "actividades": "Jarduerak",
+    "concurso": "Lehiaketa",
+    "consejos": "Aholkuak",
+    "comedor": "Jantokia",
+    "extraescolares": "Eskolaz kanpokoak",
+    "aulaMatinal": "Goizeko gela",
+    "estatutos": "Estatutuak",
+    "contacto": "Harremana"
+  }
+}

@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+:root {
+  --color-primary: #198754;
+  --color-primary-dark: #0f5f3a;
+  --color-background: #f5f8f5;
+  --color-surface: #ffffff;
+  --color-text: #172027;
+  --color-muted: #57636f;
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-text);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body), sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.container-base {
+  margin-inline: auto;
+  max-width: 1200px;
+  width: 100%;
+  padding-inline: 1rem;
+}
+
+.section-title {
+  color: var(--color-primary-dark);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

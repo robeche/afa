@@ -1,0 +1,22 @@
+{
+  "siteName": "APYMA Remontival",
+  "login": "Acceso socios",
+  "home": {
+    "title": "Construimos comunidad educativa",
+    "subtitle": "Informacion de la APYMA, noticias del centro y actividades para familias.",
+    "latestNews": "Ultimas Noticias",
+    "nextActivities": "Proximas Actividades"
+  },
+  "menu": {
+    "inicio": "Inicio",
+    "noticias": "Noticias",
+    "actividades": "Actividades",
+    "concurso": "Concurso",
+    "consejos": "Consejos",
+    "comedor": "Comedor",
+    "extraescolares": "Extraescolares",
+    "aulaMatinal": "Aula matinal",
+    "estatutos": "Estatutos",
+    "contacto": "Contacto"
+  }
+}
