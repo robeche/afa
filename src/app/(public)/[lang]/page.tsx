@@ -68,7 +68,7 @@ export default async function HomePage({ params }: HomePageProps) {
           </div>
         </div>
 
-        <aside className="space-y-4">
+        <aside className="order-first space-y-4 lg:order-last">
           <Link
             href={`/${lang}/concurso`}
             className="block rounded-2xl border border-emerald-200 bg-white p-5 font-display text-2xl font-bold text-[var(--color-primary-dark)] shadow-sm transition hover:-translate-y-0.5 hover:shadow"
