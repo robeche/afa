@@ -86,7 +86,7 @@ export function SiteHeader({ lang }: SiteHeaderProps) {
                 <summary className="list-none cursor-pointer hover:text-[var(--color-primary)]">{labels.servicios}</summary>
                 <ul className="absolute left-0 z-20 mt-2 min-w-52 rounded-xl border border-emerald-100 bg-white p-2 shadow-lg">
                   <li>
-                    <Link href={`/${lang}/actividades`} className="block rounded-md px-3 py-2 text-sm font-semibold normal-case hover:bg-emerald-50">
+                    <Link href={`/${lang}/extraescolares`} className="block rounded-md px-3 py-2 text-sm font-semibold normal-case hover:bg-emerald-50">
                       {dictionary.menu.extraescolares}
                     </Link>
                   </li>
