@@ -27,7 +27,7 @@ export function SiteHeader({ lang }: SiteHeaderProps) {
       label: labels.servicios,
       href: "#",
       children: [
-        { label: dictionary.menu.extraescolares, href: `/${lang}/actividades` },
+        { label: dictionary.menu.extraescolares, href: `/${lang}/extraescolares` },
         { label: dictionary.menu.aulaMatinal, href: `/${lang}/actividades` },
         { label: dictionary.menu.comedor, href: `/${lang}/comedor` },
       ],
