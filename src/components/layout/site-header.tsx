@@ -33,7 +33,7 @@ export function SiteHeader({ lang }: SiteHeaderProps) {
       ],
     },
     { label: dictionary.menu.consejos, href: `/${lang}/consejos` },
-    { label: labels.sobreAfa, href: `/${lang}/concurso` },
+    { label: labels.sobreAfa, href: `/${lang}/quienes-somos` },
     { label: dictionary.menu.contacto, href: `/${lang}/contacto` },
   ];
 
@@ -111,7 +111,7 @@ export function SiteHeader({ lang }: SiteHeaderProps) {
             </li>
 
             <li>
-              <Link href={`/${lang}/concurso`} className="hover:text-[var(--color-primary)]">
+              <Link href={`/${lang}/quienes-somos`} className="hover:text-[var(--color-primary)]">
                 {labels.sobreAfa}
               </Link>
             </li>
