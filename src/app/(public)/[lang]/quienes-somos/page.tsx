@@ -8,7 +8,7 @@ const content = {
   es: {
     title: "Quiénes somos",
     intro:
-      "La AFA Remontival (Asociación de Familias del Alumnado) somos el conjunto de familias del colegio Remontival de Pamplona que nos organizamos para apoyar la comunidad educativa.",
+      "La AFA Remontival (Asociación de Familias del Alumnado) somos el conjunto de familias del colegio público Remontival de Estella que nos organizamos para apoyar la comunidad educativa.",
     sections: [
       {
         icon: "bi-people-fill",
@@ -18,7 +18,7 @@ const content = {
       {
         icon: "bi-person-badge",
         heading: "La Junta Directiva",
-        body: "La AFA está gestionada por una junta directiva elegida democráticamente por los socios en asamblea general. La junta se compone de presidencia, secretaría, tesorería y vocales.",
+        body: "La AFA está gestionada por una junta directiva formada por socios voluntarios. La junta se compone de presidencia, secretaría, tesorería y vocales.",
       },
       {
         icon: "bi-flag-fill",
@@ -35,7 +35,7 @@ const content = {
   eu: {
     title: "Nor gara",
     intro:
-      "AFA Remontival (Ikasleen Familien Elkartea) Iruñeko Remontival ikastetxeko familia multzoa gara, hezkuntza komunitatea laguntzeko antolatzen garena.",
+      "AFA Remontival (Ikasleen Familien Elkartea) Lizarrako Remontival ikastetxe publikoko familia multzoa gara, hezkuntza komunitatea laguntzeko antolatzen garena.",
     sections: [
       {
         icon: "bi-people-fill",
@@ -45,7 +45,7 @@ const content = {
       {
         icon: "bi-person-badge",
         heading: "Batzorde Nagusia",
-        body: "AFA bazkideek batzar orokorrean demokratikoki hautatutako batzorde nagusi batek kudeatzen du. Batzordea presidentetzaz, idazkaritzaz, diruzaintza eta bokalez osatuta dago.",
+        body: "AFA borondatezko bazkideez osatutako batzorde nagusi batek kudeatzen du. Batzordea presidentetzaz, idazkaritzaz, diruzaintza eta bokalez osatuta dago.",
       },
       {
         icon: "bi-flag-fill",
