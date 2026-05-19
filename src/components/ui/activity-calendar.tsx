@@ -125,8 +125,13 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
       if (!isAdmin) {
         query = query.eq("publicada", true);
       }
-      const { data } = await query;
-      if (data && data.length > 0) setActivities(data as Actividad[]);
+      const { data, error } = await query;
+      if (error) {
+        console.error("[AFA] Error al cargar actividades:", error);
+        return;
+      }
+      console.log("[AFA] Actividades recibidas:", data);
+      setActivities((data as Actividad[]) ?? []);
     };
     fetchActivities();
   }, [isAdmin, sessionLoading]);
@@ -136,8 +141,9 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let query = (supabase.from("actividades") as any).select("*").order("fecha_inicio");
     if (!isAdmin) query = query.eq("publicada", true);
-    const { data } = await query;
-    if (data) setActivities(data as Actividad[]);
+    const { data, error } = await query;
+    if (error) { console.error("[AFA] Error al recargar actividades:", error); return; }
+    setActivities((data as Actividad[]) ?? []);
   }
 
   // ── Calendar state ────────────────────────────────────────────────────────
