@@ -118,7 +118,8 @@ export function RichTextEditor({
       const { data, error } = await supabase.storage.from(bucket).upload(fileName, file, { upsert: true });
       if (error) { alert(`Error al subir imagen: ${error.message}`); return; }
       const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(data.path);
-      editor.chain().focus().setImage({ src: urlData.publicUrl } as Parameters<typeof editor.chain>[0] extends never ? never : { src: string }).run();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (editor.chain().focus() as any).setImage({ src: urlData.publicUrl }).run();
     } finally { uploadingRef.current = false; }
   }
 
