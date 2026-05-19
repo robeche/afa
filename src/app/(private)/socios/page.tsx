@@ -1,11 +1,13 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useSupabaseSession } from "@/hooks/use-supabase-session";
 import { getBrowserSupabaseClient } from "@/lib/supabase/browser";
 
 export default function SociosPage() {
+  const router = useRouter();
   const { session, loading } = useSupabaseSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,8 +22,15 @@ export default function SociosPage() {
       password,
     });
 
-    // Mensaje generico para no revelar si el email existe o no (previene enumeracion de usuarios)
-    setMessage(error ? "Email o contrasena incorrectos. Por favor, intentalo de nuevo." : "Sesion iniciada correctamente.");
+    if (error) {
+      // Mensaje generico para no revelar si el email existe o no (previene enumeracion de usuarios)
+      setMessage("Email o contrasena incorrectos. Por favor, intentalo de nuevo.");
+    } else {
+      const savedLang = typeof window !== "undefined"
+        ? (localStorage.getItem("afa-lang") ?? "es")
+        : "es";
+      router.push(`/${savedLang}`);
+    }
   };
 
   const handleLogout = async () => {

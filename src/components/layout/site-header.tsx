@@ -6,6 +6,7 @@ import type { Lang } from "@/types/domain";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ServicesDropdown } from "@/components/ui/services-dropdown";
+import { UserMenu } from "@/components/ui/user-menu";
 
 interface SiteHeaderProps {
   lang: Lang;
@@ -55,13 +56,7 @@ export function SiteHeader({ lang }: SiteHeaderProps) {
 
           <div className="flex items-center gap-3">
             <LanguageSwitcher currentLanguage={lang} />
-            <Link
-              href="/socios"
-              className="rounded-md bg-[var(--color-primary)] px-3 py-2 text-sm font-semibold text-white hover:bg-[var(--color-primary-dark)]"
-            >
-              <i className="bi bi-person-lock mr-2" />
-              <span className="hidden sm:inline">{dictionary.login}</span>
-            </Link>
+            <UserMenu loginLabel={dictionary.login} />
             <MobileNav items={navItems} />
           </div>
         </div>
