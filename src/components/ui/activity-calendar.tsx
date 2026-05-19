@@ -5,6 +5,7 @@ import type { Actividad, Lang } from "@/types/domain";
 import { useSupabaseSession } from "@/hooks/use-supabase-session";
 import { getBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { ActivityFormModal } from "./activity-form-modal";
+import { ActivityDetailModal } from "./activity-detail-modal";
 
 // ─── Colour mapping ───────────────────────────────────────────────────────────
 
@@ -43,6 +44,7 @@ const UI = {
     today: "Día actual",
     newActivity: "Nueva actividad",
     edit: "Editar",
+    details: "Ver detalles",
   },
   eu: {
     prev: "Aurreko hilabetea",
@@ -52,6 +54,7 @@ const UI = {
     today: "Gaur eguna",
     newActivity: "Jarduera berria",
     edit: "Editatu",
+    details: "Xehetasunak ikusi",
   },
 } as const;
 
@@ -146,6 +149,9 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
   // ── Form modal state ──────────────────────────────────────────────────────
   const [showForm, setShowForm] = useState(false);
   const [editActivity, setEditActivity] = useState<Actividad | undefined>();
+
+  // ── Detail modal state ────────────────────────────────────────────────────
+  const [detailActivity, setDetailActivity] = useState<Actividad | null>(null);
 
   function openCreateForm() {
     setEditActivity(undefined);
@@ -379,9 +385,17 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
                         {ev.hora_inicio}
                       </p>
                     )}
-                    <p className="mt-1 line-clamp-3 text-xs text-[var(--color-muted)]">
+                    <p className="mt-1 line-clamp-2 text-xs text-[var(--color-muted)]">
                       {lang === "eu" ? ev.descripcion_eu : ev.descripcion_es}
                     </p>
+                    <button
+                      type="button"
+                      onClick={() => setDetailActivity(ev)}
+                      className="mt-2 flex items-center gap-1 text-xs font-semibold text-[var(--color-primary)] transition hover:text-[var(--color-primary-dark)]"
+                    >
+                      <i className="bi bi-arrow-right-circle" />
+                      {t.details}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -416,6 +430,15 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
           activity={editActivity}
           onSave={handleFormSave}
           onClose={() => setShowForm(false)}
+        />
+      )}
+
+      {/* ── Activity detail modal ── */}
+      {detailActivity && (
+        <ActivityDetailModal
+          activity={detailActivity}
+          lang={lang}
+          onClose={() => setDetailActivity(null)}
         />
       )}
     </>
