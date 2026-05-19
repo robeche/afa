@@ -216,7 +216,7 @@ export function RichTextEditor({
           <i className="bi bi-table" />
         </ToolBtn>
 
-        <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileInput} />
+        <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileInput} onClick={(e) => e.stopPropagation()} />
       </div>
 
       {/* ── Contextual: image alignment ── */}

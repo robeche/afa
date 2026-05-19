@@ -138,8 +138,11 @@ export function ConsejoFormModal({ consejo, onSave, onClose }: ConsejoFormModalP
       aria-label={isEdit ? "Editar consejo" : "Nueva entrada"}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
     >
-      <div className="flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
-        {/* Header */}
+      <div
+        className="flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */
         <div className="flex shrink-0 items-center justify-between bg-[var(--color-primary)] px-6 py-4 text-white">
           <h2 className="font-display text-lg font-bold">
             {isEdit ? "Editar entrada" : "Nueva entrada"}
