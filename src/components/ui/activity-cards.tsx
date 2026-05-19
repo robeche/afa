@@ -92,7 +92,7 @@ export function ActivityCards({
       <dialog
         ref={dialogRef}
         onClick={handleBackdropClick}
-        className="w-full max-w-md rounded-2xl p-0 shadow-2xl backdrop:bg-black/50"
+        className="inset-0 m-auto w-full max-w-md rounded-2xl p-0 shadow-2xl backdrop:bg-black/50"
       >
         {selected && (
           <div>
