@@ -17,7 +17,7 @@ export default async function ActividadesPage({ params }: ActividadesPageProps) 
   return (
     <section className="space-y-5">
       <h1 className="section-title">{titles[lang]}</h1>
-      <ActivityCalendar activities={mockActividades} lang={lang} />
+      <ActivityCalendar initialActivities={mockActividades} lang={lang} />
     </section>
   );
 }

@@ -27,6 +27,7 @@ export interface Actividad {
   fecha_fin: string;
   ubicacion: string;
   tipo: string;
+  imagen_url?: string;
   publicada: boolean;
 }
 
