@@ -17,7 +17,7 @@ export interface Noticia {
 }
 
 export interface Actividad {
-  id: number;
+  id: string | number;
   slug: string;
   titulo_es: string;
   titulo_eu: string;
