@@ -54,6 +54,8 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>(activity?.imagen_url ?? "");
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -123,6 +125,37 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
       setError(err instanceof Error ? err.message : "Error desconocido al guardar.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDelete() {
+    if (!activity?.id) return;
+    setDeleting(true);
+    setError(null);
+    try {
+      const supabase = getBrowserSupabaseClient();
+
+      // Delete image from Storage if it exists
+      if (activity.imagen_url) {
+        const url = new URL(activity.imagen_url);
+        // Path is everything after /object/public/actividades/
+        const parts = url.pathname.split("/object/public/actividades/");
+        if (parts[1]) {
+          await supabase.storage.from("actividades").remove([parts[1]]);
+        }
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: dbError } = await (supabase.from("actividades") as any)
+        .delete()
+        .eq("id", activity.id);
+      if (dbError) throw new Error(dbError.message);
+
+      onSave();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error al eliminar la actividad.");
+      setDeleting(false);
+      setConfirmDelete(false);
     }
   }
 
@@ -344,22 +377,58 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
           )}
 
           {/* Footer actions */}
-          <div className="flex shrink-0 items-center justify-end gap-3 border-t border-emerald-100 px-6 py-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-dark)] disabled:opacity-60"
-            >
-              {saving && <i className="bi bi-arrow-clockwise animate-spin" />}
-              {saving ? "Guardando…" : isEdit ? "Guardar cambios" : "Crear actividad"}
-            </button>
+          <div className="flex shrink-0 items-center justify-between gap-3 border-t border-emerald-100 px-6 py-4">
+            {/* Delete — only in edit mode */}
+            {isEdit && (
+              confirmDelete ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-red-600">¿Eliminar?</span>
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className="flex items-center gap-1 rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-red-700 disabled:opacity-60"
+                  >
+                    {deleting && <i className="bi bi-arrow-clockwise animate-spin" />}
+                    Sí, eliminar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmDelete(false)}
+                    className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-600 transition hover:bg-gray-50"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(true)}
+                  className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                >
+                  <i className="bi bi-trash3" />
+                  Eliminar actividad
+                </button>
+              )
+            )}
+
+            <div className="ml-auto flex items-center gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={saving}
+                className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-dark)] disabled:opacity-60"
+              >
+                {saving && <i className="bi bi-arrow-clockwise animate-spin" />}
+                {saving ? "Guardando…" : isEdit ? "Guardar cambios" : "Crear actividad"}
+              </button>
+            </div>
           </div>
         </form>
       </div>
