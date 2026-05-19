@@ -65,7 +65,9 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
     const file = e.target.files?.[0] ?? null;
     setImageFile(file);
     if (file) {
-      setImagePreview(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onload = (ev) => setImagePreview(ev.target?.result as string);
+      reader.readAsDataURL(file);
     }
   }
 
