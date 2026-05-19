@@ -1,21 +1,11 @@
 import Link from "next/link";
 
+import { ActivityCards } from "@/components/ui/activity-cards";
+import type { Activity } from "@/components/ui/activity-cards";
 import type { Lang } from "@/types/domain";
 
 interface ExtraescolaresPageProps {
   params: Promise<{ lang: Lang }>;
-}
-
-interface Activity {
-  id: string;
-  icon: string;
-  name: string;
-  instructor: string;
-  instructorUrl?: string;
-  day: string;
-  time: string;
-  age: string;
-  price: string;
 }
 
 const activities: Record<Lang, Activity[]> = {
@@ -160,6 +150,8 @@ const ui: Record<
     enrollTitle: string;
     enrollText: string;
     enrollBtn: string;
+    closeBtn: string;
+    detailsTitle: string;
     memberNote: string;
     memberBtn: string;
     periodLabel: string;
@@ -182,6 +174,8 @@ const ui: Record<
     enrollText:
       "Completa el formulario de inscripción para reservar tu plaza. Rellena un formulario por cada actividad a la que quieras inscribir a tu hijo o hija.",
     enrollBtn: "Formulario de inscripción",
+    closeBtn: "Cerrar",
+    detailsTitle: "Información Detallada",
     memberNote:
       "Para inscribirse en las extraescolares es necesario ser socio de la AFA.",
     memberBtn: "Hazte socio aquí",
@@ -205,6 +199,8 @@ const ui: Record<
     enrollText:
       "Bete izena emateko formularioa zure tokia gordetzeko. Jarduera bakoitzeko formulario bat bete.",
     enrollBtn: "Izena emateko formularioa",
+    closeBtn: "Itxi",
+    detailsTitle: "Informazio Xehatua",
     memberNote: "Izena emateko AFAko bazkide izan behar duzu.",
     memberBtn: "Egin bazkide hemen",
     periodLabel: "Izena emateko epea",
@@ -232,79 +228,20 @@ export default async function ExtraescolaresPage({
       </section>
 
       {/* Tarjetas de actividades */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {acts.map((act) => (
-          <details
-            key={act.id}
-            className="group rounded-2xl border border-emerald-100 bg-white shadow-sm open:border-emerald-300"
-          >
-            <summary className="flex cursor-pointer list-none items-center gap-3 p-5 [&::-webkit-details-marker]:hidden">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-[var(--color-primary)]">
-                <i className={`bi ${act.icon} text-xl`} />
-              </span>
-              <span className="flex-1 font-display text-lg font-bold text-[var(--color-primary-dark)]">
-                {act.name}
-              </span>
-              <i className="bi bi-chevron-down text-[var(--color-muted)] transition-transform group-open:rotate-180" />
-            </summary>
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-3 border-t border-emerald-100 px-5 pb-5 pt-4 text-sm">
-              <div>
-                <p className="font-semibold text-[var(--color-primary-dark)]">
-                  <i className="bi bi-person-fill mr-1" />
-                  {t.instructor}
-                </p>
-                {act.instructorUrl ? (
-                  <a
-                    href={act.instructorUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-[var(--color-primary)] underline"
-                  >
-                    {act.instructor}
-                  </a>
-                ) : (
-                  <p className="text-[var(--color-muted)]">{act.instructor}</p>
-                )}
-              </div>
-
-              <div>
-                <p className="font-semibold text-[var(--color-primary-dark)]">
-                  <i className="bi bi-calendar3 mr-1" />
-                  {t.day}
-                </p>
-                <p className="text-[var(--color-muted)]">{act.day}</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-[var(--color-primary-dark)]">
-                  <i className="bi bi-clock mr-1" />
-                  {t.time}
-                </p>
-                <p className="text-[var(--color-muted)]">{act.time}</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-[var(--color-primary-dark)]">
-                  <i className="bi bi-people mr-1" />
-                  {t.age}
-                </p>
-                <p className="text-[var(--color-muted)]">{act.age}</p>
-              </div>
-
-              <div className="col-span-2">
-                <p className="font-semibold text-[var(--color-primary-dark)]">
-                  <i className="bi bi-tag-fill mr-1" />
-                  {t.price}
-                </p>
-                <p className="font-bold text-[var(--color-primary)]">
-                  {act.price}
-                </p>
-              </div>
-            </div>
-          </details>
-        ))}
-      </div>
+      <ActivityCards
+        activities={acts}
+        enrollUrl="https://forms.gle/9d3fNr4nRAXaRBPz6"
+        labels={{
+          instructor: t.instructor,
+          day: t.day,
+          time: t.time,
+          age: t.age,
+          price: t.price,
+          enrollBtn: t.enrollBtn,
+          closeBtn: t.closeBtn,
+          detailsTitle: t.detailsTitle,
+        }}
+      />
 
       {/* Inscripción */}
       <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm md:p-8">

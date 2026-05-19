@@ -5,6 +5,7 @@ import { getDictionary } from "@/lib/i18n";
 import type { Lang } from "@/types/domain";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { ServicesDropdown } from "@/components/ui/services-dropdown";
 
 interface SiteHeaderProps {
   lang: Lang;
@@ -81,28 +82,14 @@ export function SiteHeader({ lang }: SiteHeaderProps) {
               </Link>
             </li>
 
-            <li>
-              <details className="group relative [&_summary::-webkit-details-marker]:hidden">
-                <summary className="list-none cursor-pointer hover:text-[var(--color-primary)]">{labels.servicios}</summary>
-                <ul className="absolute left-0 z-20 mt-2 min-w-52 rounded-xl border border-emerald-100 bg-white p-2 shadow-lg">
-                  <li>
-                    <Link href={`/${lang}/extraescolares`} className="block rounded-md px-3 py-2 text-sm font-semibold normal-case hover:bg-emerald-50">
-                      {dictionary.menu.extraescolares}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/${lang}/actividades`} className="block rounded-md px-3 py-2 text-sm font-semibold normal-case hover:bg-emerald-50">
-                      {dictionary.menu.aulaMatinal}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/${lang}/comedor`} className="block rounded-md px-3 py-2 text-sm font-semibold normal-case hover:bg-emerald-50">
-                      {dictionary.menu.comedor}
-                    </Link>
-                  </li>
-                </ul>
-              </details>
-            </li>
+            <ServicesDropdown
+              label={labels.servicios}
+              items={[
+                { label: dictionary.menu.extraescolares, href: `/${lang}/extraescolares` },
+                { label: dictionary.menu.aulaMatinal, href: `/${lang}/actividades` },
+                { label: dictionary.menu.comedor, href: `/${lang}/comedor` },
+              ]}
+            />
 
             <li>
               <Link href={`/${lang}/consejos`} className="hover:text-[var(--color-primary)]">
