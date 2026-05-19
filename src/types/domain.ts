@@ -32,15 +32,16 @@ export interface Actividad {
 }
 
 export interface Consejo {
-  id: number;
+  id: string | number;
   slug: string;
   titulo_es: string;
   titulo_eu: string;
   contenido_es: string;
   contenido_eu: string;
-  imagen_url: string;
+  imagen_url?: string;
   orden: number;
   publicado: boolean;
+  created_at?: string;
 }
 
 export interface DocumentoComedor {
