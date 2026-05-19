@@ -90,7 +90,7 @@ function buildCalendarGrid(year: number, month: number): (Date | null)[] {
 function eventsForDay(activities: Actividad[], date: Date): Actividad[] {
   const ds = toISODate(date);
   return activities.filter(
-    (a) => a.publicada && ds >= a.fecha_inicio && ds <= a.fecha_fin
+    (a) => a.publicada && ds === a.fecha_inicio
   );
 }
 
@@ -117,7 +117,8 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
     if (sessionLoading) return;
     const supabase = getBrowserSupabaseClient();
     const fetchActivities = async () => {
-      let query = supabase.from("actividades").select("*").order("fecha_inicio");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let query = (supabase.from("actividades") as any).select("*").order("fecha_inicio");
       if (!isAdmin) {
         query = query.eq("publicada", true);
       }
@@ -129,7 +130,8 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
 
   async function refetch() {
     const supabase = getBrowserSupabaseClient();
-    let query = supabase.from("actividades").select("*").order("fecha_inicio");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let query = (supabase.from("actividades") as any).select("*").order("fecha_inicio");
     if (!isAdmin) query = query.eq("publicada", true);
     const { data } = await query;
     if (data) setActivities(data as Actividad[]);
@@ -369,6 +371,12 @@ export function ActivityCalendar({ initialActivities, lang }: ActivityCalendarPr
                       <p className="mt-1 flex items-center gap-1 text-xs text-[var(--color-muted)]">
                         <i className="bi bi-geo-alt" />
                         {ev.ubicacion}
+                      </p>
+                    )}
+                    {ev.hora_inicio && (
+                      <p className="mt-0.5 flex items-center gap-1 text-xs text-[var(--color-muted)]">
+                        <i className="bi bi-clock" />
+                        {ev.hora_inicio}
                       </p>
                     )}
                     <p className="mt-1 line-clamp-3 text-xs text-[var(--color-muted)]">

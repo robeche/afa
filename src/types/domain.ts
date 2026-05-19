@@ -24,7 +24,7 @@ export interface Actividad {
   descripcion_es: string;
   descripcion_eu: string;
   fecha_inicio: string;
-  fecha_fin: string;
+  hora_inicio?: string;
   ubicacion: string;
   tipo: string;
   imagen_url?: string;

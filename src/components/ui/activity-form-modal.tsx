@@ -44,7 +44,7 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
     titulo_eu: activity?.titulo_eu ?? "",
     tipo: activity?.tipo ?? "Taller",
     fecha_inicio: activity?.fecha_inicio ?? "",
-    fecha_fin: activity?.fecha_fin ?? "",
+    hora_inicio: activity?.hora_inicio ?? "",
     ubicacion: activity?.ubicacion ?? "",
     descripcion_es: activity?.descripcion_es ?? "",
     descripcion_eu: activity?.descripcion_eu ?? "",
@@ -101,19 +101,17 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
         ...form,
         slug: slugify(form.titulo_es),
         imagen_url,
-        // If no end date provided, default to start date
-        fecha_fin: form.fecha_fin || form.fecha_inicio,
       };
 
       if (isEdit && activity?.id) {
-        const { error: dbError } = await supabase
-          .from("actividades")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error: dbError } = await (supabase.from("actividades") as any)
           .update(payload)
           .eq("id", activity.id);
         if (dbError) throw new Error(dbError.message);
       } else {
-        const { error: dbError } = await supabase
-          .from("actividades")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error: dbError } = await (supabase.from("actividades") as any)
           .insert(payload);
         if (dbError) throw new Error(dbError.message);
       }
@@ -232,7 +230,7 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
             {/* Fecha inicio */}
             <div>
               <label className="label-base" htmlFor="af-fecha-inicio">
-                Fecha inicio <span aria-hidden="true">*</span>
+                Fecha <span aria-hidden="true">*</span>
               </label>
               <input
                 id="af-fecha-inicio"
@@ -244,20 +242,16 @@ export function ActivityFormModal({ activity, onSave, onClose }: ActivityFormMod
               />
             </div>
 
-            {/* Fecha fin */}
+            {/* Hora inicio */}
             <div>
-              <label className="label-base" htmlFor="af-fecha-fin">
-                Fecha fin{" "}
-                <span className="text-xs font-normal text-[var(--color-muted)]">
-                  (si difiere de inicio)
-                </span>
+              <label className="label-base" htmlFor="af-hora-inicio">
+                Hora de inicio
               </label>
               <input
-                id="af-fecha-fin"
-                type="date"
-                value={form.fecha_fin}
-                min={form.fecha_inicio}
-                onChange={(e) => set("fecha_fin", e.target.value)}
+                id="af-hora-inicio"
+                type="time"
+                value={form.hora_inicio}
+                onChange={(e) => set("hora_inicio", e.target.value)}
                 className="input-base"
               />
             </div>
