@@ -125,14 +125,14 @@ export function ConsejoFormModal({ consejo, onSave, onClose }: ConsejoFormModalP
     }
   }
 
-  function handleOverlayClick(e: React.MouseEvent<HTMLDivElement>) {
+  function handleOverlayMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === overlayRef.current) onClose();
   }
 
   return (
     <div
       ref={overlayRef}
-      onClick={handleOverlayClick}
+      onMouseDown={handleOverlayMouseDown}
       role="dialog"
       aria-modal="true"
       aria-label={isEdit ? "Editar consejo" : "Nueva entrada"}
