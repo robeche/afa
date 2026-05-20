@@ -1,4 +1,3 @@
-import { mockConsejos } from "@/lib/utils/mock-content";
 import { ConsejosList } from "@/components/ui/consejos-list";
 import type { Lang } from "@/types/domain";
 
@@ -14,7 +13,7 @@ export default async function ConsejosPage({ params }: ConsejosPageProps) {
       <h1 className="section-title">
         {lang === "eu" ? "Aholkuak" : "Consejos"}
       </h1>
-      <ConsejosList initialConsejos={mockConsejos} lang={lang} />
+      <ConsejosList initialConsejos={[]} lang={lang} />
     </section>
   );
 }
