@@ -1,10 +1,14 @@
 import type { NextConfig } from "next";
 
 const isGithubActions = process.env.GITHUB_ACTIONS === "true";
+const hasCustomDomain = process.env.CUSTOM_DOMAIN === "true";
 const repository = process.env.GITHUB_REPOSITORY ?? "";
 const repoName = repository.split("/")[1] ?? "";
 const isUserOrOrgPage = repoName.endsWith(".github.io");
-const githubPagesBasePath = isGithubActions && repoName && !isUserOrOrgPage ? `/${repoName}` : "";
+const githubPagesBasePath =
+  !hasCustomDomain && isGithubActions && repoName && !isUserOrOrgPage
+    ? `/${repoName}`
+    : "";
 
 const nextConfig: NextConfig = {
   output: "export",
