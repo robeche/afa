@@ -15,6 +15,8 @@ export function useSupabaseSession() {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session ?? null);
       setLoading(false);
+    }).catch(() => {
+      setLoading(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, authSession) => {
