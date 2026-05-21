@@ -187,7 +187,7 @@ export default async function ServiciosPage({ params }: ServiciosPageProps) {
         </div>
       </section>
 
-      {/* ── Comedor ──────────────────────────────────────────── */}}
+      {/* ── Comedor ──────────────────────────────────────────── */}
       <section id="comedor" className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm">
         <h2 className="section-title text-xl">
           <i className="bi bi-cup-hot mr-2 text-[var(--color-primary)]" />
