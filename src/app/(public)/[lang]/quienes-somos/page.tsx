@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Lang } from "@/types/domain";
 
 interface QuienesSomosPageProps {
@@ -203,12 +204,15 @@ export default async function QuienesSomosPage({ params }: QuienesSomosPageProps
           <i className="bi bi-door-open mr-2 text-[var(--color-primary)]" />
           {t.salaTitle}
         </h2>
-        {/* TODO: añadir foto de la sala — colocar imagen en public/assets/ y reemplazar este bloque */}
-        <div className="mt-4 flex aspect-video w-full items-center justify-center rounded-xl border-2 border-dashed border-emerald-200 bg-emerald-50 text-[var(--color-muted)]">
-          <span className="flex flex-col items-center gap-2 text-sm">
-            <i className="bi bi-image text-3xl" />
-            Foto de la sala (próximamente)
-          </span>
+        <div className="mt-4 overflow-hidden rounded-xl">
+          <Image
+            src="/assets/Sala-Afa.jpg"
+            alt="Sala de la AFA"
+            width={1200}
+            height={675}
+            className="w-full object-cover"
+            priority
+          />
         </div>
         <p className="mt-4 text-sm text-gray-700">{t.sala}</p>
         <a
