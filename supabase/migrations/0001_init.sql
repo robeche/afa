@@ -87,10 +87,16 @@ alter table public.socios_perfiles enable row level security;
 alter table public.contacto_mensajes enable row level security;
 
 -- Helpers de rol
+-- SECURITY DEFINER es necesario para evitar recursion infinita:
+-- current_user_role() consulta socios_perfiles, que tiene RLS que llama a current_user_role().
+-- Con SECURITY DEFINER la funcion se ejecuta con permisos del propietario (postgres),
+-- saltandose el RLS de socios_perfiles y cortando la recursion.
 create or replace function public.current_user_role()
 returns public.rol_usuario
 language sql
 stable
+security definer
+set search_path = public
 as $$
   select coalesce((select rol from public.socios_perfiles where id = auth.uid()), 'socio'::public.rol_usuario);
 $$;
