@@ -20,8 +20,8 @@ export default function AdminPage() {
 
   const [usuarios, setUsuarios] = useState<SocioPerfil[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
 
   const isAdmin = session?.user.app_metadata?.role === "admin";
@@ -54,22 +54,37 @@ export default function AdminPage() {
     fetchUsuarios();
   }, [isAdmin]);
 
+  async function handleToggleActive(id: string, currentActive: boolean) {
+    setBusyId(id);
+    setErrorMsg("");
+    const supabase = getBrowserSupabaseClient();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase.from("socios_perfiles") as any)
+      .update({ activo: !currentActive })
+      .eq("id", id);
+    if (error) {
+      setErrorMsg("No se pudo actualizar el estado del usuario.");
+    } else {
+      setUsuarios((prev) => prev.map((u) => u.id === id ? { ...u, activo: !currentActive } : u));
+    }
+    setBusyId(null);
+  }
+
   async function handleDelete(id: string) {
-    setDeletingId(id);
+    setBusyId(id);
     setErrorMsg("");
     const supabase = getBrowserSupabaseClient();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase.from("socios_perfiles") as any)
       .delete()
       .eq("id", id);
-
     if (error) {
-      setErrorMsg("No se pudo eliminar el usuario. Asegúrate de haber ejecutado 0002_cleanup.sql en Supabase.");
+      setErrorMsg("No se pudo eliminar el perfil.");
     } else {
       setUsuarios((prev) => prev.filter((u) => u.id !== id));
     }
-    setDeletingId(null);
-    setConfirmId(null);
+    setBusyId(null);
+    setConfirmDeleteId(null);
   }
 
   const rolLabels: Record<string, string> = { admin: "Administrador", editor: "Editor", socio: "Socio" };
@@ -167,36 +182,56 @@ export default function AdminPage() {
                         }
                       </td>
                       <td className="px-5 py-3 text-right">
-                        {/* Evitar que el admin se elimine a sí mismo */}
                         {u.id === session?.user.id ? (
                           <span className="text-xs text-[var(--color-muted)] italic">Tu cuenta</span>
-                        ) : confirmId === u.id ? (
+                        ) : confirmDeleteId === u.id ? (
                           <div className="flex items-center justify-end gap-2">
-                            <span className="text-xs text-red-600">¿Confirmar?</span>
+                            <span className="text-xs text-red-600">¿Eliminar perfil?</span>
                             <button
                               type="button"
                               onClick={() => handleDelete(u.id)}
-                              disabled={deletingId === u.id}
+                              disabled={busyId === u.id}
                               className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-60"
                             >
-                              {deletingId === u.id ? "…" : "Sí, eliminar"}
+                              {busyId === u.id ? "…" : "Sí"}
                             </button>
                             <button
                               type="button"
-                              onClick={() => setConfirmId(null)}
+                              onClick={() => setConfirmDeleteId(null)}
                               className="rounded-md border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-600 hover:bg-gray-50"
                             >
                               Cancelar
                             </button>
                           </div>
                         ) : (
-                          <button
-                            type="button"
-                            onClick={() => setConfirmId(u.id)}
-                            className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 transition"
-                          >
-                            <i className="bi bi-trash mr-1" />Eliminar
-                          </button>
+                          <div className="flex items-center justify-end gap-2">
+                            {/* Desactivar / Activar — bloquea el acceso sin borrar la cuenta */}
+                            <button
+                              type="button"
+                              onClick={() => handleToggleActive(u.id, u.activo)}
+                              disabled={busyId === u.id}
+                              className={[
+                                "rounded-md px-2.5 py-1 text-xs font-semibold transition disabled:opacity-60",
+                                u.activo
+                                  ? "border border-amber-200 text-amber-700 hover:bg-amber-50"
+                                  : "border border-emerald-200 text-emerald-700 hover:bg-emerald-50",
+                              ].join(" ")}
+                            >
+                              {busyId === u.id ? "…" : u.activo
+                                ? <><i className="bi bi-slash-circle mr-1" />Desactivar</>
+                                : <><i className="bi bi-check-circle mr-1" />Activar</>}
+                            </button>
+                            {/* Eliminar perfil — requiere confirmación */}
+                            <button
+                              type="button"
+                              onClick={() => setConfirmDeleteId(u.id)}
+                              disabled={busyId === u.id}
+                              className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-semibold text-red-500 hover:bg-red-50 transition disabled:opacity-60"
+                              title="Eliminar perfil (la cuenta de acceso permanece en Supabase Auth)"
+                            >
+                              <i className="bi bi-trash" />
+                            </button>
+                          </div>
                         )}
                       </td>
                     </tr>

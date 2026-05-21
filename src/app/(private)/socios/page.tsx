@@ -245,6 +245,12 @@ function ProfileSection({ userId, email, userMetadata }: {
         apellidos: data?.apellidos || userMetadata?.apellidos || "",
         rol: data?.rol || "socio",
       });
+      // Cuenta desactivada por el admin → cerrar sesión automáticamente
+      if (data && data.activo === false) {
+        const supabase = getBrowserSupabaseClient();
+        await supabase.auth.signOut();
+        return;
+      }
       setLoadingProfile(false);
     }
     fetchProfile();
