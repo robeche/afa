@@ -77,7 +77,7 @@ export default async function HomePage({ params }: HomePageProps) {
           </Link>
 
           <Link
-            href={`/${lang}/actividades`}
+            href={`/${lang}/servicios`}
             className="block rounded-2xl border border-emerald-200 bg-white p-5 font-display text-2xl font-bold text-[var(--color-primary-dark)] shadow-sm transition hover:-translate-y-0.5 hover:shadow"
           >
             {labels.services}

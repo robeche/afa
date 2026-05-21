@@ -3,6 +3,7 @@ import type { Lang } from "@/types/domain";
 type MenuKey =
   | "inicio"
   | "noticias"
+  | "servicios"
   | "actividades"
   | "concurso"
   | "consejos"
@@ -21,6 +22,7 @@ export interface MenuItem {
 export const mainMenuItems: MenuItem[] = [
   { key: "inicio", icon: "bi-house-door", href: (lang) => `/${lang}` },
   { key: "noticias", icon: "bi-newspaper", href: (lang) => `/${lang}/noticias` },
+  { key: "servicios", icon: "bi-grid", href: (lang) => `/${lang}/servicios` },
   { key: "actividades", icon: "bi-calendar-event", href: (lang) => `/${lang}/actividades` },
   { key: "concurso", icon: "bi-trophy", href: (lang) => `/${lang}/concurso` },
   { key: "consejos", icon: "bi-lightbulb", href: (lang) => `/${lang}/consejos` },
