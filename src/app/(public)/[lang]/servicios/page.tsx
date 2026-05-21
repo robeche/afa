@@ -35,8 +35,16 @@ const content = {
       { label: "Día suelto", price: "10 €" },
     ],
 
+    // Extraescolares
+    extraSectionTitle: "Extraescolares",
+    extraDesc:
+      "La gestión de las actividades extraescolares recae sobre la AFA, no sobre el colegio. Es la Junta quien busca las posibles actividades, contacta con los monitores e instructores, organiza los horarios, gestiona las inscripciones y las bajas, y se encarga del cobro de las cuotas. El colegio cede los espacios, pero toda la organización y responsabilidad de los extraescolares es de la AFA.",
+    extraCta: "Ver todas las actividades extraescolares",
+
     // Comedor
     comedorSectionTitle: "Comedor",
+    comedorNote:
+      "La AFA no gestiona el comedor escolar, que depende directamente del colegio. Sin embargo, la Junta vela por que su funcionamiento sea el correcto y actúa como interlocutor entre las familias y el equipo del comedor.",
     comedorMenuBtn: "Descarga el menú",
     comedorDesc:
       "Además de la jornada de puertas abiertas al principio de cada curso, todas las familias que hacen uso del comedor pueden pedir una visita para probar la comida. La Junta de la AFA coordina esas visitas (siempre a las 12 h con un máximo de 6 personas) entre las encargadas del comedor y las familias.",
@@ -72,8 +80,16 @@ const content = {
       { label: "Egun soltea", price: "10 €" },
     ],
 
+    // Extraescolares
+    extraSectionTitle: "Eskolaz kanpoko jarduerak",
+    extraDesc:
+      "Eskolaz kanpoko jardueren kudeaketa AFAren gain dago, ez ikastetxearengan. Juntak bilatzen ditu jarduera posibleak, monitoreekin eta hezitzaileekin harremanetan jartzen da, ordutegiak antolatzen ditu, izena ematea eta bajak kudeatzen ditu, eta kuoten kobrantza egiten du. Ikastetxeak espazioak uzten ditu, baina eskolaz kanpoko jardueren antolaketa eta ardura osoa AFArena da.",
+    extraCta: "Eskolaz kanpoko jarduera guztiak ikusi",
+
     // Comedor
     comedorSectionTitle: "Jantokia",
+    comedorNote:
+      "AFAk ez du eskola-jantokia kudeatzen, ikastetxearen zuzeneko menpekoa baita. Hala ere, Juntak funtzionamendu egokia zaintzen du eta familien eta jantokiko taldearen arteko bitartekari gisa jarduten du.",
     comedorMenuBtn: "Deskargatu menua",
     comedorDesc:
       "Ikasturte hasierako ateak irekitzeko jardunaldiaz gain, jantokia erabiltzen duten familia guztiek bisita bat eska dezakete janaria probatzeko. AFAko Juntak bisita horiek koordinatzen ditu (beti 12:00etan, gehienez 6 pertsonarekin) jantokiko arduradunen eta familien artean.",
@@ -153,12 +169,35 @@ export default async function ServiciosPage({ params }: ServiciosPageProps) {
         </div>
       </section>
 
-      {/* ── Comedor ──────────────────────────────────────────── */}
+      {/* ── Extraescolares ───────────────────────────────────── */}
+      <section id="extraescolares" className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm">
+        <h2 className="section-title text-xl">
+          <i className="bi bi-controller mr-2 text-[var(--color-primary)]" />
+          {t.extraSectionTitle}
+        </h2>
+        <p className="mt-3 text-sm text-gray-700">{t.extraDesc}</p>
+        <div className="mt-4">
+          <Link
+            href={`/${lang}/extraescolares`}
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--color-primary-dark)]"
+          >
+            <i className="bi bi-arrow-right" />
+            {t.extraCta}
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Comedor ──────────────────────────────────────────── */}}
       <section id="comedor" className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm">
         <h2 className="section-title text-xl">
           <i className="bi bi-cup-hot mr-2 text-[var(--color-primary)]" />
           {t.comedorSectionTitle}
         </h2>
+
+        <p className="mt-3 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+          <i className="bi bi-info-circle mr-1.5" />
+          {t.comedorNote}
+        </p>
 
         <div className="mt-4">
           <Link
