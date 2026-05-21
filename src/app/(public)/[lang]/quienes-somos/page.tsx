@@ -4,6 +4,34 @@ interface QuienesSomosPageProps {
   params: Promise<{ lang: Lang }>;
 }
 
+const estatutosArticles = [
+  { n: "1", title: "Denominación", body: "Con la denominación de Asociación de Familias Remontival Familia Elkartea, se constituye en Estella una asociación sin ánimo de lucro, que se regirá por los presentes Estatutos, por los acuerdos válidamente adoptados por sus Órganos Directivos dentro de sus competencias, y por la legislación vigente en materia de asociaciones." },
+  { n: "2", title: "Domicilio y Ámbito territorial", body: "El domicilio social se fija en el Colegio Público Remontival, calle Remontival nº 7, Estella. El ámbito territorial es el escolar correspondiente al citado Colegio." },
+  { n: "3", title: "Duración", body: "La Asociación se constituye por tiempo indefinido. Su disolución se realizará conforme a los presentes Estatutos y a la legislación vigente." },
+  { n: "4", title: "Fines", body: "Asistir y apoyar a las familias en la educación; colaborar con el Centro educativo; promover la participación activa de las familias; facilitar su representación en el Consejo Escolar; promover actividades educativas, culturales, extraescolares y de bienestar; desarrollar acciones formativas e informativas; fomentar la igualdad, la inclusión y la convivencia intercultural; y colaborar con administraciones y entidades sociales." },
+  { n: "5", title: "Socios/as", body: "Integrarán la Asociación los padres, madres y tutores legales del alumnado del Centro que, habiendo cursado debidamente su solicitud, deseen cooperar con sus fines y acepten los presentes Estatutos." },
+  { n: "6", title: "Derechos y deberes", body: "Derechos: asistir con voz y voto a las Asambleas; elegir y ser elegido para la Junta; participar en actividades; recibir servicios; proponer asuntos; informarse del funcionamiento. Deberes: aceptar los Estatutos; estar al corriente de las cuotas; contribuir a los fines; respetar la transparencia." },
+  { n: "7", title: "Pérdida de la condición de socio/a", body: "Por renuncia, pérdida de la condición de padre/madre/tutor del alumnado, impago de cuotas, o acuerdo de la Junta Directiva por incumplimiento de obligaciones estatutarias (ratificado por la primera Asamblea General)." },
+  { n: "8", title: "Asamblea General", body: "Órgano supremo de la Asociación. Se reunirá ordinariamente una vez al año y extraordinariamente cuando lo exija la ley, la Junta o lo solicite al menos el 20% de los socios." },
+  { n: "9", title: "Convocatorias y quórum", body: "Convocatoria con al menos 8 días de antelación. Primera convocatoria: mitad de socios. Segunda: cualquier número. Acuerdos por mayoría simple." },
+  { n: "10", title: "Facultades de la Asamblea Ordinaria", body: "Aprobar memoria, balance y presupuestos. Elegir miembros de la Junta Directiva." },
+  { n: "11", title: "Facultades de la Asamblea Extraordinaria", body: "Modificar Estatutos; decidir sobre cuestiones de la Junta o el 20% de socios; autorizar enajenaciones; acordar la disolución. En empate, el/la Presidente/a tiene voto de calidad." },
+  { n: "12", title: "Composición de la Junta Directiva", body: "Presidente/a, Vicepresidente/a, Secretario/a, Tesorero/a y hasta 10 vocales." },
+  { n: "13", title: "Duración de los cargos", body: "Dos años, con posibilidad de reelección. La Junta se renueva por mitades mediante sufragio libre y secreto." },
+  { n: "14", title: "Reuniones de la Junta", body: "Al menos una vez al mes y siempre que lo solicite el/la Presidente/a o al menos 4 miembros." },
+  { n: "15", title: "Funciones de la Junta Directiva", body: "Ejecutar acuerdos de la Asamblea; representar legalmente a la Asociación; administrar fondos; resolver sobre admisión y baja de socios; elaborar memorias y presupuestos; proponer expulsiones; crear comisiones de trabajo." },
+  { n: "16", title: "Acuerdos", body: "Mayoría simple con asistencia de al menos la mitad de la Junta. En caso de empate, el/la Presidente/a tiene voto de calidad." },
+  { n: "17", title: "Gratuidad del cargo", body: "Todos los miembros ejercerán sus cargos con carácter gratuito." },
+  { n: "18", title: "Funciones del/la Presidente/a", body: "Representación legal; convocar y presidir reuniones; autorizar disposiciones de fondos junto al/la Tesorero/a; autorizar actas." },
+  { n: "19", title: "Funciones del/la Vicepresidente/a", body: "Apoyar al/la Presidente/a y sustituirle en caso de urgencia, enfermedad, imposibilidad o delegación." },
+  { n: "20", title: "Funciones del/la Secretario/a", body: "Actuar como tal en Asambleas y Juntas; gestionar correspondencia; llevar libros de registro de socios y actas." },
+  { n: "21", title: "Funciones del/la Tesorero/a", body: "Custodiar fondos; llevar libro de cuentas; autorizar disposiciones de fondos junto al/la Presidente/a; preparar balances." },
+  { n: "22", title: "Constitución de la Junta", body: "Válida con la presencia del/la Presidente/a (o Vicepresidente/a en sustitución) y al menos la mitad de los miembros." },
+  { n: "23", title: "Régimen económico", body: "La Asociación se constituye sin patrimonio fundacional." },
+  { n: "24", title: "Recursos económicos", body: "Cuotas y aportaciones voluntarias; subvenciones y ayudas públicas o privadas; cualquier otro recurso lícito aprobado por la Asamblea. Todos los recursos se gestionarán con transparencia." },
+  { n: "25", title: "Disolución", body: "Por acuerdo de la Asamblea General Extraordinaria con mayoría de dos tercios. Los bienes sobrantes se destinarán a fines educativos o sociales, preferentemente a favor del alumnado del Colegio Remontival." },
+];
+
 const content = {
   es: {
     motto: "Construyamos nuestra escuela",
@@ -43,33 +71,7 @@ const content = {
     estatutosTitle: "Estatutos",
     estatutosDesc: "Puedes descargar los estatutos completos de la AFA Remontival en formato PDF.",
     estatutosDl: "Descargar estatutos (PDF)",
-    estatutosArticles: [
-      { n: "1", title: "Denominación", body: "Con la denominación de Asociación de Familias Remontival Familia Elkartea, se constituye en Estella una asociación sin ánimo de lucro, que se regirá por los presentes Estatutos, por los acuerdos válidamente adoptados por sus Órganos Directivos dentro de sus competencias, y por la legislación vigente en materia de asociaciones." },
-      { n: "2", title: "Domicilio y Ámbito territorial", body: "El domicilio social se fija en el Colegio Público Remontival, calle Remontival nº 7, Estella. El ámbito territorial es el escolar correspondiente al citado Colegio." },
-      { n: "3", title: "Duración", body: "La Asociación se constituye por tiempo indefinido. Su disolución se realizará conforme a los presentes Estatutos y a la legislación vigente." },
-      { n: "4", title: "Fines", body: "Asistir y apoyar a las familias en la educación; colaborar con el Centro educativo; promover la participación activa de las familias; facilitar su representación en el Consejo Escolar; promover actividades educativas, culturales, extraescolares y de bienestar; desarrollar acciones formativas e informativas; fomentar la igualdad, la inclusión y la convivencia intercultural; y colaborar con administraciones y entidades sociales." },
-      { n: "5", title: "Socios/as", body: "Integrarán la Asociación los padres, madres y tutores legales del alumnado del Centro que, habiendo cursado debidamente su solicitud, deseen cooperar con sus fines y acepten los presentes Estatutos." },
-      { n: "6", title: "Derechos y deberes", body: "Derechos: asistir con voz y voto a las Asambleas; elegir y ser elegido para la Junta; participar en actividades; recibir servicios; proponer asuntos; informarse del funcionamiento. Deberes: aceptar los Estatutos; estar al corriente de las cuotas; contribuir a los fines; respetar la transparencia." },
-      { n: "7", title: "Pérdida de la condición de socio/a", body: "Por renuncia, pérdida de la condición de padre/madre/tutor del alumnado, impago de cuotas, o acuerdo de la Junta Directiva por incumplimiento de obligaciones estatutarias (ratificado por la primera Asamblea General)." },
-      { n: "8", title: "Asamblea General", body: "Órgano supremo de la Asociación. Se reunirá ordinariamente una vez al año y extraordinariamente cuando lo exija la ley, la Junta o lo solicite al menos el 20% de los socios." },
-      { n: "9", title: "Convocatorias y quórum", body: "Convocatoria con al menos 8 días de antelación. Primera convocatoria: mitad de socios. Segunda: cualquier número. Acuerdos por mayoría simple." },
-      { n: "10", title: "Facultades de la Asamblea Ordinaria", body: "Aprobar memoria, balance y presupuestos. Elegir miembros de la Junta Directiva." },
-      { n: "11", title: "Facultades de la Asamblea Extraordinaria", body: "Modificar Estatutos; decidir sobre cuestiones de la Junta o el 20% de socios; autorizar enajenaciones; acordar la disolución. En empate, el/la Presidente/a tiene voto de calidad." },
-      { n: "12", title: "Composición de la Junta Directiva", body: "Presidente/a, Vicepresidente/a, Secretario/a, Tesorero/a y hasta 10 vocales." },
-      { n: "13", title: "Duración de los cargos", body: "Dos años, con posibilidad de reelección. La Junta se renueva por mitades mediante sufragio libre y secreto." },
-      { n: "14", title: "Reuniones de la Junta", body: "Al menos una vez al mes y siempre que lo solicite el/la Presidente/a o al menos 4 miembros." },
-      { n: "15", title: "Funciones de la Junta Directiva", body: "Ejecutar acuerdos de la Asamblea; representar legalmente a la Asociación; administrar fondos; resolver sobre admisión y baja de socios; elaborar memorias y presupuestos; proponer expulsiones; crear comisiones de trabajo." },
-      { n: "16", title: "Acuerdos", body: "Mayoría simple con asistencia de al menos la mitad de la Junta. En caso de empate, el/la Presidente/a tiene voto de calidad." },
-      { n: "17", title: "Gratuidad del cargo", body: "Todos los miembros ejercerán sus cargos con carácter gratuito." },
-      { n: "18", title: "Funciones del/la Presidente/a", body: "Representación legal; convocar y presidir reuniones; autorizar disposiciones de fondos junto al/la Tesorero/a; autorizar actas." },
-      { n: "19", title: "Funciones del/la Vicepresidente/a", body: "Apoyar al/la Presidente/a y sustituirle en caso de urgencia, enfermedad, imposibilidad o delegación." },
-      { n: "20", title: "Funciones del/la Secretario/a", body: "Actuar como tal en Asambleas y Juntas; gestionar correspondencia; llevar libros de registro de socios y actas." },
-      { n: "21", title: "Funciones del/la Tesorero/a", body: "Custodiar fondos; llevar libro de cuentas; autorizar disposiciones de fondos junto al/la Presidente/a; preparar balances." },
-      { n: "22", title: "Constitución de la Junta", body: "Válida con la presencia del/la Presidente/a (o Vicepresidente/a en sustitución) y al menos la mitad de los miembros." },
-      { n: "23", title: "Régimen económico", body: "La Asociación se constituye sin patrimonio fundacional." },
-      { n: "24", title: "Recursos económicos", body: "Cuotas y aportaciones voluntarias; subvenciones y ayudas públicas o privadas; cualquier otro recurso lícito aprobado por la Asamblea. Todos los recursos se gestionarán con transparencia." },
-      { n: "25", title: "Disolución", body: "Por acuerdo de la Asamblea General Extraordinaria con mayoría de dos tercios. Los bienes sobrantes se destinarán a fines educativos o sociales, preferentemente a favor del alumnado del Colegio Remontival." },
-    ],
+    estatutosArticles,
   },
   eu: {
     motto: "Elkarrekin Egiten Dugu Eskola",
@@ -109,7 +111,7 @@ const content = {
     estatutosTitle: "Estatutuak",
     estatutosDesc: "AFA Remontivaleko estatutu osoak PDF formatuan deskarga ditzakezu.",
     estatutosDl: "Estatutuak deskargatu (PDF)",
-    estatutosArticles: [],
+    estatutosArticles,
   },
 };
 
