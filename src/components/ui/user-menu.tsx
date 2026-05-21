@@ -46,9 +46,20 @@ export function UserMenu({ loginLabel }: UserMenuProps) {
   const email = session.user.email ?? "";
   // Show the part before @ truncated to 16 chars
   const shortName = email.split("@")[0].slice(0, 16);
+  const isAdmin = session.user.app_metadata?.role === "admin";
 
   return (
     <div className="flex items-center gap-2">
+      {isAdmin && (
+        <Link
+          href="/admin"
+          title="Panel de administración"
+          className="flex items-center gap-1.5 rounded-md bg-amber-50 border border-amber-200 px-3 py-1.5 text-sm font-semibold text-amber-800 transition hover:bg-amber-100"
+        >
+          <i className="bi bi-shield-lock-fill" />
+          <span className="hidden sm:inline">Admin</span>
+        </Link>
+      )}
       <span className="hidden items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-[var(--color-primary-dark)] sm:flex">
         <i className="bi bi-person-check-fill text-[var(--color-primary)]" />
         {shortName}
