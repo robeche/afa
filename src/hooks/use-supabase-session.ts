@@ -10,7 +10,13 @@ export function useSupabaseSession() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const supabase = getBrowserSupabaseClient();
+    let supabase: ReturnType<typeof getBrowserSupabaseClient>;
+    try {
+      supabase = getBrowserSupabaseClient();
+    } catch {
+      setLoading(false);
+      return;
+    }
 
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session ?? null);
