@@ -45,10 +45,11 @@ export interface Consejo {
 }
 
 export interface DocumentoComedor {
-  id: number;
+  id: string | number;
   mes: string;
   anio: number;
-  pdf_es_url: string;
-  pdf_eu_url: string;
+  pdf_es_url: string | null;
+  pdf_eu_url: string | null;
   publicado: boolean;
+  created_at?: string;
 }
