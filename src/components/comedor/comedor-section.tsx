@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { DocumentoComedor, Lang } from "@/types/domain";
 import { useSupabaseSession } from "@/hooks/use-supabase-session";
 import { getBrowserSupabaseClient } from "@/lib/supabase/browser";
@@ -82,6 +82,10 @@ export function ComedorSection({ lang }: ComedorSectionProps) {
   const [allDocs, setAllDocs] = useState<DocumentoComedor[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingDoc, setEditingDoc] = useState<DocumentoComedor | "new" | null>(null);
+  // Blob URL for the PDF viewer (avoids CSP frame-src restrictions)
+  const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const blobUrlRef = useRef<string | null>(null);
 
   const mes = currentMesES();
   const year = currentYear();
@@ -112,6 +116,36 @@ export function ComedorSection({ lang }: ComedorSectionProps) {
     fetchDocs();
   }, [sessionLoading, fetchDocs]);
 
+  // Fetch PDF as blob to bypass CSP frame-src restrictions
+  useEffect(() => {
+    const url = currentDoc?.pdf_es_url ?? null;
+    // Revoke previous blob URL to avoid memory leaks
+    if (blobUrlRef.current) {
+      URL.revokeObjectURL(blobUrlRef.current);
+      blobUrlRef.current = null;
+    }
+    setPdfBlobUrl(null);
+    if (!url) return;
+
+    setPdfLoading(true);
+    fetch(url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const blobUrl = URL.createObjectURL(blob);
+        blobUrlRef.current = blobUrl;
+        setPdfBlobUrl(blobUrl);
+      })
+      .catch(() => setPdfBlobUrl(null))
+      .finally(() => setPdfLoading(false));
+
+    return () => {
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
+      }
+    };
+  }, [currentDoc?.pdf_es_url]);
+
   function handleSave() {
     setEditingDoc(null);
     setLoading(true);
@@ -121,6 +155,7 @@ export function ComedorSection({ lang }: ComedorSectionProps) {
   const pdfUrl = currentDoc?.pdf_es_url ?? null;
   const currentMesLabel = mesDisplayName(mes, lang);
   const sortedDocs = sortDocs(allDocs);
+  const viewerLoading = loading || pdfLoading;
 
   return (
     <div className="space-y-6">
@@ -142,17 +177,24 @@ export function ComedorSection({ lang }: ComedorSectionProps) {
           )}
         </div>
 
-        {loading ? (
+        {viewerLoading ? (
           <div className="h-64 animate-pulse rounded-xl bg-emerald-50" />
         ) : pdfUrl ? (
           <div className="space-y-3">
-            {/* PDF iframe viewer */}
+            {/* PDF iframe viewer — uses blob URL to bypass CSP frame-src */}
             <div className="overflow-hidden rounded-xl border border-emerald-100 bg-gray-50">
-              <iframe
-                src={`${pdfUrl}#toolbar=1&navpanes=0`}
-                title={`Menú ${currentMesLabel} ${year}`}
-                className="h-[60vh] min-h-[420px] w-full"
-              />
+              {pdfBlobUrl ? (
+                <iframe
+                  src={`${pdfBlobUrl}#toolbar=1&navpanes=0`}
+                  title={`Menú ${currentMesLabel} ${year}`}
+                  className="h-[60vh] min-h-[420px] w-full"
+                />
+              ) : (
+                <div className="flex h-64 items-center justify-center text-[var(--color-muted)]">
+                  <i className="bi bi-exclamation-circle mr-2" />
+                  No se pudo cargar el visor. Usa el botón de descarga.
+                </div>
+              )}
             </div>
             {/* Action buttons */}
             <div className="flex items-center justify-end gap-2">

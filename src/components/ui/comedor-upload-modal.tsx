@@ -71,7 +71,9 @@ export function ComedorUploadModal({ documento, onSave, onClose }: ComedorUpload
           .upload(fileName, pdfFile, { upsert: true, contentType: "application/pdf" });
 
         if (uploadError) {
-          throw new Error(`Error al subir PDF: ${uploadError.message}`);
+          throw new Error(
+            `Error al subir PDF: ${uploadError.message || uploadError.cause || JSON.stringify(uploadError)}`
+          );
         }
 
         const { data: urlData } = supabase.storage
