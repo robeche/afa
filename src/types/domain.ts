@@ -3,7 +3,7 @@ export type Lang = "es" | "eu";
 export type RolSocio = "admin" | "editor" | "socio";
 
 export interface Noticia {
-  id: number;
+  id: string | number;
   slug: string;
   titulo_es: string;
   titulo_eu: string;
