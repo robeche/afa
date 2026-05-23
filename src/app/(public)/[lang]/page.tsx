@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getDictionary } from "@/lib/i18n";
+import { socialLinks } from "@/lib/utils/navigation";
 import { HomeNewsSection } from "@/components/noticias/home-news-section";
 import type { Lang } from "@/types/domain";
 
@@ -57,7 +58,7 @@ export default async function HomePage({ params }: HomePageProps) {
           </Link>
 
           <a
-            href="https://www.instagram.com/"
+            href={socialLinks.instagram}
             target="_blank"
             rel="noreferrer"
             className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-white p-5 shadow-sm"

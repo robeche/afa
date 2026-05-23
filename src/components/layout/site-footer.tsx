@@ -1,3 +1,5 @@
+import { socialLinks } from "@/lib/utils/navigation";
+
 export function SiteFooter() {
   return (
     <footer className="mt-14 bg-[var(--color-primary-dark)] py-8 text-white">
@@ -8,13 +10,23 @@ export function SiteFooter() {
         </div>
 
         <div className="flex items-center gap-4 text-xl">
-          <a href="#" aria-label="Instagram" className="hover:text-emerald-200">
+          <a
+            href={socialLinks.instagram}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram"
+            className="hover:text-emerald-200"
+          >
             <i className="bi bi-instagram" />
           </a>
           <a href="#" aria-label="Facebook" className="hover:text-emerald-200">
             <i className="bi bi-facebook" />
           </a>
-          <a href="#" aria-label="Correo" className="hover:text-emerald-200">
+          <a
+            href={`mailto:${socialLinks.email}`}
+            aria-label="Correo"
+            className="hover:text-emerald-200"
+          >
             <i className="bi bi-envelope-fill" />
           </a>
         </div>

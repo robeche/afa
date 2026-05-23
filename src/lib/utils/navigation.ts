@@ -19,6 +19,11 @@ export interface MenuItem {
   href: (lang: Lang) => string;
 }
 
+export const socialLinks = {
+  instagram: "https://www.instagram.com/afa_remontival/",
+  email: "familiasremontival@gmail.com",
+};
+
 export const mainMenuItems: MenuItem[] = [
   { key: "inicio", icon: "bi-house-door", href: (lang) => `/${lang}` },
   { key: "noticias", icon: "bi-newspaper", href: (lang) => `/${lang}/noticias` },

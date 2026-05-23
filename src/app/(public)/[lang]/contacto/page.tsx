@@ -1,4 +1,5 @@
 import type { Lang } from "@/types/domain";
+import { socialLinks } from "@/lib/utils/navigation";
 
 interface ContactoPageProps {
   params: Promise<{ lang: Lang }>;
@@ -16,7 +17,10 @@ export default async function ContactoPage({ params }: ContactoPageProps) {
         </p>
         <ul className="mt-4 space-y-2 text-sm text-[var(--color-muted)]">
           <li>
-            <i className="bi bi-envelope mr-2 text-[var(--color-primary)]" />apyma@example.org
+            <i className="bi bi-envelope mr-2 text-[var(--color-primary)]" />
+            <a href={`mailto:${socialLinks.email}`} className="hover:text-[var(--color-primary)] hover:underline">
+              {socialLinks.email}
+            </a>
           </li>
           <li>
             <i className="bi bi-geo-alt mr-2 text-[var(--color-primary)]" />Colegio Remontival, Estella
